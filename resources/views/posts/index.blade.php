@@ -23,24 +23,7 @@
 
             @if($posts->count())
                 @foreach($posts as $post)
-                    <div class="mb-4">
-                        <a href="" class="font-bold">{{ $post->user->name }}</a> 
-                        <span class="text-gray-600 text-sm">{{ $post->created_at->diffForHumans() }}</span>
-                        <p class="mb-2">{{ $post->body }}</p>
-
-                        <div class="flex items-center">
-                            <form action="" method="post" class="mr-1">
-                                @csrf
-                                <button type="submit" class="text-white bg-green-500 p-2 rounded-sm">Like</button>
-                            </form>
-                            <form action="" method="post" class="mr-1">
-                                @csrf
-                                <button type="submit" class="text-white bg-gray-500 p-2 rounded-sm">Unlike</button>
-                            </form>
-
-                            <span>{{ $post->likes->count() }} {{ Str::plural('like', $post->likes->count()) }}</span>
-                        </div>
-                    </div>
+                    <x-post :post="$post"/>
                 @endforeach
                 {{ $posts->links() }}
             @else
