@@ -33,8 +33,6 @@ Route::post('/logout', [LogoutController::class, 'index'])->name('logout');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
-Route::get('/users/{user:username}', [UserPostController::class, 'index'])->name('users.posts');
-
 Route::get('/posts', [PostController::class, 'index'])->name('posts');
 Route::get('/posts/{post:id}', [PostController::class, 'show'])->name('posts.show');
 Route::post('/posts', [PostController::class, 'store']);
@@ -42,6 +40,9 @@ Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.
 
 Route::post('/posts/{post}/likes', [PostController::class, 'storeLikes'])->name('posts.likes')->middleware('auth');
 Route::delete('/posts/{post}/likes', [PostController::class, 'destroyLikes'])->name('posts.likes')->middleware('auth');
+
+Route::get('/users/{user:username}', [UserPostController::class, 'index'])->name('users.posts');
+
 
 // Route::get('/posts', function () {
 //     return view('posts.index');

@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Mail\PostLiked;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PostController extends Controller
 {
+    public function __construct() {
+        $this->middleware(['auth'])->only('store','destroy');
+    }
+
     public function index () {
         $posts = Post::with(['user','likes'])->orderBy('created_at','DESC')->paginate(5);
         return view('posts.index', [
@@ -41,6 +47,10 @@ class PostController extends Controller
 
         if($post->likedBy($request->user())) {
             return response(null, 409);
+        }
+
+        if(!$post->likes()->onlyTrashed()->where('user_id', $request->user()->id)->count()) {
+            Mail::to($post->user)->send(new PostLiked(auth()->user(), $post));
         }
 
         $post->likes()->create([
